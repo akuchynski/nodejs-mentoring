@@ -4,8 +4,8 @@
   "description": "NodeJS Mentoring Tasks",
   "main": "index.js",
   "scripts": {
-    "task1.1": "nodemon reverse.js",
-	"task1.2": "nodemon csv.js"
+    "task1": "nodemon --exec babel-node ./src/reverse.js",
+    "task2": "nodemon --exec babel-node ./src/csv.js"
   },
   "author": "Andrei Kuchynski",
   "license": "ISC",
@@ -13,6 +13,10 @@
     "csvtojson": "^2.0.10"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
     "nodemon": "^2.0.4"
   }
 }

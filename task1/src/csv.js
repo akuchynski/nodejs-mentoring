@@ -1,8 +1,10 @@
-const fs = require('fs');
-const csv = require('csvtojson');
+import { appendFileSync, existsSync, unlinkSync } from 'fs';
+import { csv } from 'csvtojson';
+
 const csvFilePath = './csv/input.csv';
 const txtFilePath = './txt/output.txt';
 
+deleteTxtFile(txtFilePath);
 convertCsvData();
 
 function convertCsvData() {
@@ -16,7 +18,7 @@ function convertCsvData() {
 };
 
 function writeJsonToTxt(jsonData) {
-  fs.appendFileSync(txtFilePath, prepareJson(jsonData), function (err) {
+  appendFileSync(txtFilePath, prepareJson(jsonData), function (err) {
     if (err) {
       console.log(err);
     }
@@ -25,6 +27,7 @@ function writeJsonToTxt(jsonData) {
 
 function prepareJson(jsonData) {
   delete jsonData.Amount;
+  jsonData.Price = Number(jsonData.Price);
   Object.keys(jsonData).forEach(key => {
     let value = jsonData[key];
     delete jsonData[key];
@@ -32,4 +35,14 @@ function prepareJson(jsonData) {
   });
   console.log('jsonData: ' + JSON.stringify(jsonData));
   return JSON.stringify(jsonData) + '\n';
+};
+
+function deleteTxtFile(path) {
+  if (existsSync(path)) {
+    try {
+      unlinkSync(path)
+    } catch (err) {
+      console.error(err);
+    }
+  }
 };
