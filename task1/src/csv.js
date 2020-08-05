@@ -1,15 +1,13 @@
-import { appendFileSync, existsSync, unlinkSync } from 'fs';
+import { appendFile, existsSync, unlinkSync, createReadStream } from 'fs';
 import { csv } from 'csvtojson';
+import { resolve } from 'path';
 
-const csvFilePath = './csv/input.csv';
-const txtFilePath = './txt/output.txt';
-
-deleteTxtFile(txtFilePath);
+deleteTxtFile(resolve('txt', 'output.txt'));
 convertCsvData();
 
 function convertCsvData() {
   csv()
-    .fromFile(csvFilePath)
+    .fromStream(createReadStream(resolve('csv', 'input.csv')))
     .subscribe(
       (jsonData) => writeJsonToTxt(jsonData),
       (err) => console.error('Error:', err),
@@ -18,7 +16,7 @@ function convertCsvData() {
 };
 
 function writeJsonToTxt(jsonData) {
-  appendFileSync(txtFilePath, prepareJson(jsonData), function (err) {
+  appendFile(resolve('txt', 'output.txt'), prepareJson(jsonData), function (err) {
     if (err) {
       console.log(err);
     }
@@ -26,15 +24,11 @@ function writeJsonToTxt(jsonData) {
 };
 
 function prepareJson(jsonData) {
-  delete jsonData.Amount;
-  jsonData.Price = Number(jsonData.Price);
-  Object.keys(jsonData).forEach(key => {
-    let value = jsonData[key];
-    delete jsonData[key];
-    jsonData[key.toLowerCase()] = value;
-  });
-  console.log('jsonData: ' + JSON.stringify(jsonData));
-  return JSON.stringify(jsonData) + '\n';
+  const entries = Object.entries(jsonData)
+    .filter(([key]) => key != 'Amount')
+    .map(([key, value]) => [key.toLowerCase(), key === 'Price' ? Number(value) : value]);
+  console.log('jsonData: ' + JSON.stringify(Object.fromEntries(entries)));
+  return JSON.stringify(Object.fromEntries(entries)).concat('\n');
 };
 
 function deleteTxtFile(path) {
