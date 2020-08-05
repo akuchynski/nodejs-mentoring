@@ -4,8 +4,19 @@ import { resolve } from 'path';
 
 deleteTxtFile(resolve('txt', 'output.txt'));
 convertCsvData();
+convertCsvDataByStream();
 
 function convertCsvData() {
+  csv()
+    .fromFile(resolve('csv', 'input.csv'))
+    .subscribe(
+      (jsonData) => writeJsonToTxt(jsonData),
+      (err) => console.error('Error:', err),
+      () => console.log('Success')
+    );
+};
+
+function convertCsvDataByStream() {
   csv()
     .fromStream(createReadStream(resolve('csv', 'input.csv')))
     .subscribe(
