@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "task1": "nodemon --exec babel-node ./src/reverse.js",
-    "task2": "nodemon --exec babel-node ./src/csv.js"
+    "task2:file": "nodemon --exec babel-node ./src/csv.js -- file",
+    "task2:stream": "nodemon --exec babel-node ./src/csv.js -- stream"
   },
   "author": "Andrei Kuchynski",
   "license": "ISC",

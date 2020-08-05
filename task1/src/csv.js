@@ -3,8 +3,14 @@ import { csv } from 'csvtojson';
 import { resolve } from 'path';
 
 deleteTxtFile(resolve('txt', 'output.txt'));
-convertCsvData();
-convertCsvDataByStream();
+
+if (process.argv[2] === 'file') {
+  convertCsvData();
+} else if (process.argv[2] === 'stream') {
+  convertCsvDataByStream();
+} else {
+  console.error('Please, check arguments passed into the script!');
+}
 
 function convertCsvData() {
   csv()
@@ -12,7 +18,7 @@ function convertCsvData() {
     .subscribe(
       (jsonData) => writeJsonToTxt(jsonData),
       (err) => console.error('Error:', err),
-      () => console.log('Success')
+      () => console.log('Success (file)')
     );
 };
 
@@ -22,7 +28,7 @@ function convertCsvDataByStream() {
     .subscribe(
       (jsonData) => writeJsonToTxt(jsonData),
       (err) => console.error('Error:', err),
-      () => console.log('Success')
+      () => console.log('Success (stream)')
     );
 };
 
