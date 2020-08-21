@@ -1,0 +1,30 @@
+{
+  "name": "task2",
+  "version": "1.0.0",
+  "description": "NodeJS Mentoring Tasks",
+  "main": "index.js",
+  "scripts": {
+    "task1": "nodemon --exec babel-node ./src/index.js"
+  },
+  "author": "Andrei Kuchynski",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
+    "eslint": "^7.7.0",
+    "nodemon": "^2.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akuchynski/nodejs-mentoring.git"
+  },
+  "bugs": {
+    "url": "https://github.com/akuchynski/nodejs-mentoring/issues"
+  },
+  "homepage": "https://github.com/akuchynski/nodejs-mentoring#readme"
+}
