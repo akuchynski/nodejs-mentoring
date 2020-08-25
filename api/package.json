@@ -9,7 +9,9 @@
   "author": "Andrei Kuchynski",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "@hapi/joi": "^17.1.1",
+    "express": "^4.17.1",
+    "express-joi-validation": "^4.0.4-beta.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
