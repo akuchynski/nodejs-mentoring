@@ -2,9 +2,9 @@
   "name": "task2",
   "version": "1.0.0",
   "description": "NodeJS Mentoring Tasks",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "task1": "nodemon --exec babel-node ./src/index.js"
+    "task2": "nodemon --exec babel-node ./app.js"
   },
   "author": "Andrei Kuchynski",
   "license": "ISC",
