@@ -11,7 +11,8 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "express": "^4.17.1",
-    "express-joi-validation": "^4.0.4-beta.0"
+    "express-joi-validation": "^4.0.4-beta.0",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",

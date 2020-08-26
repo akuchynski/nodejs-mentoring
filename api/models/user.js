@@ -3,21 +3,21 @@ let users = [
         id: '1',
         login: 'user1',
         password: 'pass1',
-        age: '21',
+        age: 21,
         isDeleted: false
     },
     {
         id: '2',
         login: 'user2',
         password: 'pass2',
-        age: '22',
+        age: 22,
         isDeleted: false
     },
     {
         id: '3',
         login: 'user3',
         password: 'pass3',
-        age: '23',
+        age: 23,
         isDeleted: true
     }
 ]

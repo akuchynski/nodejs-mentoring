@@ -1,14 +1,14 @@
 const User = require('../models/user.js');
+const uuid = require('uuid');
 
 exports.create = (req, res) => {
-    console.log(req.body);
     if (!req.body) {
         return res.status(400).send({
             message: "User content can not be empty!"
         });
     }
     const user = new User(
-        req.body.id,
+        uuid.v4(),
         req.body.login,
         req.body.password,
         req.body.age,
@@ -57,6 +57,6 @@ exports.delete = (req, res) => {
             .json({ message: `User with id ${req.params.id} not found!` });
     } else {
         User.removeUser(user);
-        res.json({ message: `User with id ${req.params.id} was removed successfully!` })
+        res.redirect("/users");
     }
 };
