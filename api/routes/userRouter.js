@@ -8,6 +8,9 @@ router.route('/')
     .post(validator.body(userSchema.schema), userController.create)
     .get(userController.findAll);
 
+router.route('/suggest')
+    .get(userController.suggestUsers);
+
 router.route('/:id')
     .get(userController.findOne)
     .put(validator.body(userSchema.schema), userController.update)

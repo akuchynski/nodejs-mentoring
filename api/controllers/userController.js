@@ -32,6 +32,15 @@ exports.findOne = (req, res) => {
     }
 };
 
+exports.suggestUsers = (req, res) => {
+    const users = User.getAutoSuggestUsers(req.query.login, req.query.limit);
+    if (users.length == 0) {
+        res.json({ message: `User list is empty!` });
+    } else {
+        res.json(users);
+    }
+};
+
 exports.update = (req, res) => {
     const user = User.findUserById(req.params.id);
     if (user === undefined || user.isDeleted) {
