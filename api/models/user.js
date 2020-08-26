@@ -50,12 +50,17 @@ module.exports = class User {
     }
 
     static findUserById(id) {
-        return users.find(user => user.id == id)
+        return users.find(user => user.id == id);
     }
 
     static findUserByIdAndRemove(id) {
-        let user = users.find(user => user.id == id)
+        let user = users.find(user => user.id == id);
         users = users.filter(user => user.id != id);
+        return user;
+    }
+
+    static updateUser(userData) {
+        let user = users.find(user => user.id == userData.id);
         return user;
     }
 

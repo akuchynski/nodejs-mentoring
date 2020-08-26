@@ -48,7 +48,7 @@ exports.update = (req, res) => {
             req.body.age,
             req.body.isDeleted
         );
-        user.update();
+        user.updateUser();
         res.redirect("/users");
     }
 };
