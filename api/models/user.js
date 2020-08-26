@@ -18,7 +18,7 @@ let users = [
         login: 'user3',
         password: 'pass3',
         age: '23',
-        isDeleted: false
+        isDeleted: true
     }
 ]
 
@@ -36,32 +36,20 @@ module.exports = class User {
         users.push(this);
     }
 
-    static update() {
-        let user = users.find(user => user.id == this.id)
-        this.login = login;
-        this.password = password;
-        this.age = age;
-        this.isDeleted = isDeleted;
-        return user;
-    }
-
     static getAllUsers() {
-        return users;
+        return users.filter(user => !user.isDeleted);
     }
 
     static findUserById(id) {
-        return users.find(user => user.id == id);
+        return users.find(user => user.id == id && !user.isDeleted);
     }
 
-    static findUserByIdAndRemove(id) {
-        let user = users.find(user => user.id == id);
-        users = users.filter(user => user.id != id);
-        return user;
+    static removeUser(userData) {
+        return userData.isDeleted = true;
     }
 
     static updateUser(userData) {
-        let user = users.find(user => user.id == userData.id);
-        return user;
+        let userIndex = users.findIndex(user => user.id === userData.id)
+        return users.splice(userIndex, 1, userData);
     }
-
 }

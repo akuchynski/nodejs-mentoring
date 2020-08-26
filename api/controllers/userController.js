@@ -24,8 +24,8 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
     let user = User.findUserById(req.params.id);
-    if (user === undefined) {
-        res.status(404)
+    if (user === undefined || user.isDeleted) {
+        res.status(400)
             .json({ message: `User with id ${req.params.id} not found!` });
     } else {
         res.json(user)
@@ -34,12 +34,9 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
     let user = User.findUserById(req.params.id);
-    if (user === undefined) {
-        res.status(404)
-            .json({ message: `User with id ${req.params.id} not found!` });
-    } if (req.body.login === undefined || req.body.age === undefined) {
+    if (user === undefined || user.isDeleted) {
         res.status(400)
-            .json({ message: `Please check login : ${req.body.login} value!` });
+            .json({ message: `User with id ${req.params.id} not found!` });
     } else {
         const user = new User(
             req.params.id,
@@ -48,17 +45,18 @@ exports.update = (req, res) => {
             req.body.age,
             req.body.isDeleted
         );
-        user.updateUser();
+        User.updateUser(user);
         res.redirect("/users");
     }
 };
 
 exports.delete = (req, res) => {
-    let user = User.findUserByIdAndRemove(req.params.id);
-    if (user === undefined) {
-        res.status(404)
+    let user = User.findUserById(req.params.id);
+    if (user === undefined || user.isDeleted) {
+        res.status(400)
             .json({ message: `User with id ${req.params.id} not found!` });
     } else {
+        User.removeUser(user);
         res.json({ message: `User with id ${req.params.id} was removed successfully!` })
     }
 };
