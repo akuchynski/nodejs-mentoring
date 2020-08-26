@@ -1,4 +1,4 @@
-let users = [
+const users = [
     {
         id: '1',
         login: 'user1',
@@ -20,10 +20,9 @@ let users = [
         age: 23,
         isDeleted: true
     }
-]
+];
 
 module.exports = class User {
-
     constructor(id, login, password, age, isDeleted) {
         this.id = id;
         this.login = login;
@@ -41,7 +40,7 @@ module.exports = class User {
     }
 
     static findUserById(id) {
-        return users.find(user => user.id == id && !user.isDeleted);
+        return users.find(user => user.id === id && !user.isDeleted);
     }
 
     static removeUser(userData) {
@@ -49,7 +48,7 @@ module.exports = class User {
     }
 
     static updateUser(userData) {
-        let userIndex = users.findIndex(user => user.id === userData.id)
+        const userIndex = users.findIndex(user => user.id === userData.id);
         return users.splice(userIndex, 1, userData);
     }
-}
+};

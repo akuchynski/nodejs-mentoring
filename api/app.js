@@ -8,10 +8,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.listen(3000);
 
-app.use("/users", userRouter);
+app.use('/users', userRouter);
 
 console.log(User.getAllUsers());
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.json({ app: true });
 });

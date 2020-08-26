@@ -5,4 +5,4 @@ exports.schema = Joi.object().keys({
     password: Joi.string().alphanum().min(4).required(),
     age: Joi.number().integer().min(4).max(130).required(),
     isDeleted: Joi.boolean().required()
-})
+});
