@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController.js');
-const userSchema = require('../schemas/userSchema.js');
+const userController = require('../controllers/userController');
+const userSchema = require('../schemas/userSchema');
 const validator = require('express-joi-validation').createValidator({});
 
 router.route('/')
