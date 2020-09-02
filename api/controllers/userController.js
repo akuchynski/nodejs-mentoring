@@ -1,71 +1,59 @@
-const User = require('../models/user.js');
-const uuid = require('uuid');
+const { models } = require('../models');
 
-exports.create = (req, res) => {
-    if (!req.body) {
-        return res.status(400).send({
-            message: 'User content can not be empty!'
+async function create(req, res) {
+    try {
+        await models.user.create(req.body);
+        res.status(201).end();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getAll(req, res) {
+    console.log(models);
+    const users = await models.user.findAll();
+    res.status(200).json(users);
+}
+
+async function getById(req, res) {
+    const user = await models.user.findByPk(req.params.id);
+    if (user) {
+        res.status(200).json(user);
+    } else {
+        res.status(404).send(`User with id ${req.params.id} not found!`);
+    }
+}
+
+async function update(req, res) {
+    const user = await models.user.findByPk(req.params.id);
+    if (!user) {
+        res.status(400).send(`User with id ${req.params.id} not found!`);
+    }
+    try {
+        await models.user.update(req.body, {
+            where: {
+                id: req.params.id
+            }
         });
+        res.status(200).end();
+    } catch (error) {
+        console.log(error);
     }
-    const user = new User(
-        uuid.v4(),
-        req.body.login,
-        req.body.password,
-        req.body.age,
-        req.body.isDeleted
-    );
-    user.save();
-    res.redirect('/users');
-};
+}
 
-exports.findAll = (req, res) => {
-    res.json(User.getAllUsers());
-};
+async function remove(req, res) {
+    await models.user.destroy({
+        where: {
+            id: req.params.id
+        }
+    });
+    res.status(200).end();
+}
 
-exports.findOne = (req, res) => {
-    const user = User.findUserById(req.params.id);
-    if (user === undefined || user.isDeleted) {
-        res.status(400)
-            .json({ message: `User with id ${req.params.id} not found!` });
-    } else {
-        res.json(user);
-    }
-};
-
-exports.suggestUsers = (req, res) => {
-    const users = User.getAutoSuggestUsers(req.query.login, req.query.limit);
-    if (users.length == 0) {
-        res.json({ message: `User list is empty!` });
-    } else {
-        res.json(users);
-    }
-};
-
-exports.update = (req, res) => {
-    const user = User.findUserById(req.params.id);
-    if (user === undefined || user.isDeleted) {
-        res.status(400)
-            .json({ message: `User with id ${req.params.id} not found!` });
-    } else {
-        const userData = new User(
-            req.params.id,
-            req.body.login,
-            req.body.password,
-            req.body.age,
-            req.body.isDeleted
-        );
-        User.updateUser(userData);
-        res.redirect('/users');
-    }
-};
-
-exports.delete = (req, res) => {
-    const user = User.findUserById(req.params.id);
-    if (user === undefined || user.isDeleted) {
-        res.status(400)
-            .json({ message: `User with id ${req.params.id} not found!` });
-    } else {
-        User.removeUser(user);
-        res.redirect('/users');
-    }
+module.exports = {
+    create,
+    getAll,
+    getById,
+    update,
+    remove
 };

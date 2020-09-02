@@ -4,7 +4,7 @@
   "description": "NodeJS Mentoring Tasks",
   "main": "app.js",
   "scripts": {
-    "task2": "nodemon --exec babel-node ./app.js"
+    "task3": "nodemon --exec babel-node ./app.js"
   },
   "author": "Andrei Kuchynski",
   "license": "ISC",
@@ -12,6 +12,9 @@
     "@hapi/joi": "^17.1.1",
     "express": "^4.17.1",
     "express-joi-validation": "^4.0.4-beta.0",
+    "pg": "^8.3.3",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.4",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
