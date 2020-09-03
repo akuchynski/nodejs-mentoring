@@ -1,4 +1,4 @@
-const { models } = require('../models');
+const { models } = require('../db');
 
 async function create(req, res) {
     try {

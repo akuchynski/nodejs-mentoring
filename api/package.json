@@ -1,10 +1,14 @@
 {
-  "name": "task2",
+  "name": "task3",
   "version": "1.0.0",
   "description": "NodeJS Mentoring Tasks",
   "main": "app.js",
   "scripts": {
-    "task3": "nodemon --exec babel-node ./app.js"
+    "task3": "nodemon --exec babel-node ./app.js",
+    "users:create": "npx sequelize-cli db:migrate",
+    "users:delete": "npx sequelize-cli db:migrate:undo",
+    "users:seed": "npx sequelize-cli db:seed:all",
+    "users:unseed": "npx sequelize-cli db:seed:undo:all"
   },
   "author": "Andrei Kuchynski",
   "license": "ISC",
@@ -24,7 +28,8 @@
     "@babel/preset-env": "^7.11.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.7.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "sequelize-cli": "^6.2.0"
   },
   "repository": {
     "type": "git",
