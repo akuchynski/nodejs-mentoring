@@ -4,11 +4,11 @@
   "description": "NodeJS Mentoring Tasks",
   "main": "app.js",
   "scripts": {
-    "task3:start": "nodemon --exec babel-node ./app.js",
+    "task3:start": "nodemon --exec babel-node -r ./node_modules/dotenv/config ./app.js",
     "users:create": "npx sequelize-cli db:migrate",
     "users:delete": "npx sequelize-cli db:migrate:undo",
     "users:seed": "npx sequelize-cli db:seed:all",
-    "users:unseed": "npx sequelize-cli db:seed:undo:all"
+    "users:unseed": "npx sequelize-cli db:seed:undo:all --env development"
   },
   "author": "Andrei Kuchynski",
   "license": "ISC",
