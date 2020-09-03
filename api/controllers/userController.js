@@ -10,7 +10,6 @@ async function create(req, res) {
 }
 
 async function getAll(req, res) {
-    console.log(models);
     const users = await models.user.findAll();
     res.status(200).json(users);
 }

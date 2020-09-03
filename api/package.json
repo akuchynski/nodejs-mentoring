@@ -4,7 +4,7 @@
   "description": "NodeJS Mentoring Tasks",
   "main": "app.js",
   "scripts": {
-    "task3": "nodemon --exec babel-node ./app.js",
+    "task3:start": "nodemon --exec babel-node ./app.js",
     "users:create": "npx sequelize-cli db:migrate",
     "users:delete": "npx sequelize-cli db:migrate:undo",
     "users:seed": "npx sequelize-cli db:seed:all",
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-joi-validation": "^4.0.4-beta.0",
     "pg": "^8.3.3",
