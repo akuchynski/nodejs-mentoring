@@ -1,9 +1,13 @@
 const { models } = require('../db');
 
 async function create(req, res) {
+    const user = await models.user.findOne({ where: { login: req.body.login } });
+    if (user) {
+        res.status(409).send(`User login ${req.body.login} already exists!`);
+    }
     try {
         await models.user.create(req.body);
-        res.status(201).end();
+        res.status(201);
     } catch (error) {
         console.log(error);
     }
@@ -26,7 +30,7 @@ async function getById(req, res) {
 async function update(req, res) {
     const user = await models.user.findByPk(req.params.id);
     if (!user) {
-        res.status(400).send(`User with id ${req.params.id} not found!`);
+        res.status(404).send(`User with id ${req.params.id} not found!`);
     }
     try {
         await models.user.update(req.body, {
@@ -34,7 +38,7 @@ async function update(req, res) {
                 id: req.params.id
             }
         });
-        res.status(200).end();
+        res.status(200);
     } catch (error) {
         console.log(error);
     }
@@ -46,7 +50,7 @@ async function remove(req, res) {
             id: req.params.id
         }
     });
-    res.status(200).end();
+    res.status(200);
 }
 
 module.exports = {
