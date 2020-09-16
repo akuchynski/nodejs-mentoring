@@ -1,8 +1,8 @@
-const express = require('express');
-const app = express();
-const userRouter = require('./routes/userRouter');
+import express from 'express';
+import userRouter from './routes/userRouter';
+import { sequelize } from './db';
 
-const sequelize = require('./db');
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
