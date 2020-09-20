@@ -7,7 +7,9 @@ export async function up(queryInterface, Sequelize) {
             references: {
                 model: 'user',
                 key: 'id'
-            }
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         },
         groupId: {
             allowNull: false,
@@ -16,7 +18,9 @@ export async function up(queryInterface, Sequelize) {
             references: {
                 model: 'group',
                 key: 'id'
-            }
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         }
     });
 }

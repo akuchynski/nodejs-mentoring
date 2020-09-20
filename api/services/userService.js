@@ -1,4 +1,5 @@
-import UserModel from "../db/models/user.model";
+import GroupModel from '../db/models/group.model';
+import UserModel from '../db/models/user.model';
 
 class UserService {
     async createUser(requestBody) {
@@ -9,7 +10,12 @@ class UserService {
         return UserModel.findOne({
             where: {
                 id
-            }
+            },
+            include: [
+                {
+                    model: GroupModel
+                }
+            ]
         });
     }
 
@@ -17,12 +23,23 @@ class UserService {
         return UserModel.findOne({
             where: {
                 login
-            }
+            },
+            include: [
+                {
+                    model: GroupModel
+                }
+            ]
         });
     }
 
     async getAllUsers() {
-        return UserModel.findAll();
+        return UserModel.findAll({
+            include: [
+                {
+                    model: GroupModel
+                }
+            ]
+        });
     }
 
     async updateUser(id, requestBody) {

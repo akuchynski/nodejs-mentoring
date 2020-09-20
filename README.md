@@ -18,3 +18,16 @@ Sequelize migration scripts:
 
 Run application:
 * `npm run task3:start` - to launch the application.
+## Homework 4
+Database configuration:
+
+Environment variables must located in .env file (please, see .env.demo).
+
+Sequelize migration scripts:
+* `npm run tables:create` - to create tables.
+* `npm run tables:delete` - to drop tables.
+* `npm run data:seed` - to insert initial data into tables.
+* `npm run data:unseed` - to delete inserted data.
+
+Run application:
+* `npm run app:start` - to launch the application.
