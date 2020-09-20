@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import GroupModel from '../db/models/group.model';
 import UserModel from '../db/models/user.model';
-// import { sequelize } from '../db/index';
+import { sequelize } from '../db/index';
 
 class GroupService {
     async createGroup(requestBody) {
@@ -67,10 +67,7 @@ class GroupService {
             },
             include: [
                 {
-                    model: UserModel,
-                    through: {
-                        attributes: []
-                    }
+                    model: UserModel
                 }
             ]
         });
@@ -81,8 +78,14 @@ class GroupService {
             }
         });
 
-        await group.addUsers(usersList);
-        await group.save();
+        const transaction = await sequelize.transaction({ autocommit:false });
+        try {
+            await group.addUsers(usersList, { transaction });
+            await group.save({ transaction });
+            await transaction.commit();
+        } catch (err) {
+            await transaction.rollback();
+        }
     }
 }
 
