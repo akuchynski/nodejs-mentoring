@@ -1,6 +1,6 @@
-const { userService } = require('../services/userService');
+import { userService } from '../services/userService';
 
-async function create(req, res, next) {
+const create = async (req, res, next) => {
     try {
         const user = await userService.getUserByLogin(req.body.login);
         if (user) {
@@ -12,18 +12,18 @@ async function create(req, res, next) {
     } catch (error) {
         return next(error);
     }
-}
+};
 
-async function getAll(req, res, next) {
+const getAll = async (req, res, next) => {
     try {
         const users = await userService.getAllUsers();
         res.json(users);
     } catch (error) {
         return next(error);
     }
-}
+};
 
-async function getById(req, res, next) {
+const getById = async (req, res, next) => {
     try {
         const user = await userService.getUserById(req.params.id);
         if (user) {
@@ -34,9 +34,9 @@ async function getById(req, res, next) {
     } catch (error) {
         return next(error);
     }
-}
+};
 
-async function update(req, res, next) {
+const update = async (req, res, next) => {
     try {
         const user = await userService.getUserById(req.params.id);
         if (!user) {
@@ -49,18 +49,18 @@ async function update(req, res, next) {
     } catch (error) {
         return next(error);
     }
-}
+};
 
-async function remove(req, res, next) {
+const remove = async (req, res, next) => {
     try {
         await userService.deleteUserById(req.params.id);
         res.status(200).end();
     } catch (error) {
         return next(error);
     }
-}
+};
 
-module.exports = {
+export {
     create,
     getAll,
     getById,

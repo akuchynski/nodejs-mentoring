@@ -1,14 +1,14 @@
 {
-  "name": "task3",
+  "name": "task4",
   "version": "1.0.0",
   "description": "NodeJS Mentoring Tasks",
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
-    "task3:start": "nodemon --exec babel-node -r ./node_modules/dotenv/config ./app.js",
-    "users:create": "npx sequelize-cli db:migrate",
-    "users:delete": "npx sequelize-cli db:migrate:undo",
-    "users:seed": "npx sequelize-cli db:seed:all",
-    "users:unseed": "npx sequelize-cli db:seed:undo:all --env development"
+    "app:start": "nodemon --exec babel-node -r ./node_modules/dotenv/config ./app.js",
+    "tables:create": "npx sequelize-cli db:migrate --env development",
+    "tables:delete": "npx sequelize-cli db:migrate:undo:all --env development",
+    "data:seed": "npx sequelize-cli db:seed:all --env development",
+    "data:unseed": "npx sequelize-cli db:seed:undo:all --env development"
   },
   "author": "Andrei Kuchynski",
   "license": "ISC",
@@ -27,10 +27,18 @@
     "@babel/core": "^7.11.0",
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.0",
+    "@babel/preset-typescript": "^7.10.4",
+    "@babel/register": "^7.11.5",
+    "@types/express": "^4.17.8",
+    "@types/hapi__joi": "^17.1.4",
+    "@types/node": "^14.10.2",
+    "@types/sequelize": "^4.28.9",
+    "@types/validator": "^13.1.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.7.0",
     "nodemon": "^2.0.4",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "sequelize-cli-typescript": "^3.2.0-c"
   },
   "repository": {
     "type": "git",

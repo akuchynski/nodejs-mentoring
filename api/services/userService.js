@@ -1,32 +1,49 @@
-const { models } = require('../db');
+import GroupModel from '../db/models/group.model';
+import UserModel from '../db/models/user.model';
 
 class UserService {
     async createUser(requestBody) {
-        return models.user.create(requestBody);
+        return UserModel.create(requestBody);
     }
 
     async getUserById(id) {
-        return models.user.findOne({
+        return UserModel.findOne({
             where: {
                 id
-            }
+            },
+            include: [
+                {
+                    model: GroupModel
+                }
+            ]
         });
     }
 
     async getUserByLogin(login) {
-        return models.user.findOne({
+        return UserModel.findOne({
             where: {
                 login
-            }
+            },
+            include: [
+                {
+                    model: GroupModel
+                }
+            ]
         });
     }
 
     async getAllUsers() {
-        return models.user.findAll();
+        return UserModel.findAll({
+            include: [
+                {
+                    model: GroupModel
+                }
+            ]
+        });
     }
 
     async updateUser(id, requestBody) {
-        return models.user.update(requestBody, {
+        return UserModel.update(requestBody, {
             where: {
                 id
             }
@@ -34,7 +51,7 @@ class UserService {
     }
 
     async deleteUserById(id) {
-        return models.user.destroy({
+        return UserModel.destroy({
             where: {
                 id
             }

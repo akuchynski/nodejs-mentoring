@@ -1,21 +1,29 @@
-const express = require('express');
-const app = express();
-const userRouter = require('./routes/userRouter');
+import express from 'express';
+import userRouter from './routes/userRouter';
+import groupRouter from './routes/groupRouter';
+import { sequelize } from './db';
+import User from './db/models/user.model';
+import Group from './db/models/group.model';
 
-const sequelize = require('./db');
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/users', userRouter);
+app.use('/groups', groupRouter);
 
 app.listen(process.env.EXPRESS_PORT);
 
+User.belongsToMany(Group, { through: 'user_group' });
+Group.belongsToMany(User, { through: 'user_group' });
+
 sequelize
     .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
+    .then(async () => {
+        await User.sync();
+        await Group.sync();
     })
     .catch(err => {
-        console.error('Unable to connect to the database:', err);
+        console.error(err);
     });
