@@ -1,49 +1,48 @@
-import GroupModel from '../db/models/group.model';
-import UserModel from '../db/models/user.model';
+import { User, Group } from '../db/models';
 
 class UserService {
     async createUser(requestBody) {
-        return UserModel.create(requestBody);
+        return User.create(requestBody);
     }
 
     async getUserById(id) {
-        return UserModel.findOne({
+        return User.findOne({
             where: {
                 id
             },
             include: [
                 {
-                    model: GroupModel
+                    model: Group
                 }
             ]
         });
     }
 
     async getUserByLogin(login) {
-        return UserModel.findOne({
+        return User.findOne({
             where: {
                 login
             },
             include: [
                 {
-                    model: GroupModel
+                    model: Group
                 }
             ]
         });
     }
 
     async getAllUsers() {
-        return UserModel.findAll({
+        return User.findAll({
             include: [
                 {
-                    model: GroupModel
+                    model: Group
                 }
             ]
         });
     }
 
     async updateUser(id, requestBody) {
-        return UserModel.update(requestBody, {
+        return User.update(requestBody, {
             where: {
                 id
             }
@@ -51,7 +50,7 @@ class UserService {
     }
 
     async deleteUserById(id) {
-        return UserModel.destroy({
+        return User.destroy({
             where: {
                 id
             }

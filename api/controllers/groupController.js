@@ -67,9 +67,8 @@ const addUsers = async (req, res, next) => {
         if (!group) {
             res.status(404).send(`Group with id ${req.params.id} not found!`);
         } else {
-            await groupService.addUsersToGroup(req.params.id, req.body.usersIds);
-            await group.reload();
-            res.json(group);
+            const groupUpdated = await groupService.addUsersToGroup(req.params.id, req.body.usersIds);
+            res.json(groupUpdated);
         }
     } catch (error) {
         return next(error);
