@@ -1,48 +1,48 @@
 import { Op } from 'sequelize';
 import { sequelize } from '../db/index';
-import { Group, User }  from '../db/models';
+import { Group, User } from '../db/models';
+import { logged } from '../utils/decorators/logged';
 
 class GroupService {
+    @logged
     async createGroup(requestBody) {
         return Group.create(requestBody);
     }
 
+    @logged
     async getGroupById(id) {
         return Group.findOne({
             where: {
                 id
             },
-            include: [
-                {
-                    model: User
-                }
-            ]
+            include: {
+                model: User
+            }
         });
     }
 
+    @logged
     async getGroupByName(name) {
         return Group.findOne({
             where: {
                 name
             },
-            include: [
-                {
-                    model: User
-                }
-            ]
+            include: {
+                model: User
+            }
         });
     }
 
+    @logged
     async getAllGroups() {
         return Group.findAll({
-            include: [
-                {
-                    model: User
-                }
-            ]
+            include: {
+                model: User
+            }
         });
     }
 
+    @logged
     async updateGroup(id, requestBody) {
         return Group.update(requestBody, {
             where: {
@@ -51,6 +51,7 @@ class GroupService {
         });
     }
 
+    @logged
     async deleteGroupById(id) {
         return Group.destroy({
             where: {
@@ -59,16 +60,15 @@ class GroupService {
         });
     }
 
+    @logged
     async addUsersToGroup(id, userIds) {
         const group = await Group.findOne({
             where: {
                 id
             },
-            include: [
-                {
-                    model: User
-                }
-            ]
+            include: {
+                model: User
+            }
         });
 
         const usersList = await User.findAll({
@@ -78,12 +78,11 @@ class GroupService {
         });
 
         if (usersList.length === 0) {
-            throw Error(`Users dont exist. userIds: ${userIds}`);
+            throw ({ status: 404, code: 'USER_NOT_EXISTS', message: `Users dont exist. Check input data. userIds: ${userIds}` });
         }
 
         const transaction = await sequelize.transaction({ autocommit: false });
         try {
-            await group.addUsers(usersList, { transaction });
             await group.addUsers(usersList, { transaction });
             await transaction.commit();
             return await group.reload();

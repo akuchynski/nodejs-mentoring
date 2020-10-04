@@ -1,46 +1,46 @@
 import { User, Group } from '../db/models';
+import { logged } from '../utils/decorators/logged';
 
 class UserService {
+    @logged
     async createUser(requestBody) {
         return User.create(requestBody);
     }
 
+    @logged
     async getUserById(id) {
         return User.findOne({
             where: {
                 id
             },
-            include: [
-                {
-                    model: Group
-                }
-            ]
+            include: {
+                model: Group
+            }
         });
     }
 
+    @logged
     async getUserByLogin(login) {
         return User.findOne({
             where: {
                 login
             },
-            include: [
-                {
-                    model: Group
-                }
-            ]
+            include: {
+                model: Group
+            }
         });
     }
 
+    @logged
     async getAllUsers() {
         return User.findAll({
-            include: [
-                {
-                    model: Group
-                }
-            ]
+            include: {
+                model: Group
+            }
         });
     }
 
+    @logged
     async updateUser(id, requestBody) {
         return User.update(requestBody, {
             where: {
@@ -49,6 +49,7 @@ class UserService {
         });
     }
 
+    @logged
     async deleteUserById(id) {
         return User.destroy({
             where: {

@@ -60,7 +60,6 @@ const remove = async (req, res, next) => {
     }
 };
 
-
 const addUsers = async (req, res, next) => {
     try {
         const group = await groupService.getGroupById(req.params.id);
