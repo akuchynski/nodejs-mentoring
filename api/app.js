@@ -2,8 +2,8 @@ import express from 'express';
 import userRouter from './routes/userRouter';
 import groupRouter from './routes/groupRouter';
 import { sequelize } from './db';
-import User from './db/models/user.model';
-import Group from './db/models/group.model';
+import logger from './utils/loggers/logger';
+import globalErrorHandler from './middlewares/globalErrorHandler';
 
 const app = express();
 
@@ -13,17 +13,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/users', userRouter);
 app.use('/groups', groupRouter);
 
-app.listen(process.env.EXPRESS_PORT);
+app.use(globalErrorHandler);
 
-User.belongsToMany(Group, { through: 'user_group' });
-Group.belongsToMany(User, { through: 'user_group' });
+process
+    .on('unhandledRejection', (reason, p) => {
+        logger.error(reason, 'Unhandled Rejection at Promise', p);
+    })
+    .on('uncaughtException', err => {
+        logger.error(err, 'Uncaught Exception thrown');
+        process.exit(1);
+    });
 
 sequelize
-    .authenticate()
-    .then(async () => {
-        await User.sync();
-        await Group.sync();
-    })
-    .catch(err => {
-        console.error(err);
+    .sync()
+    .then(() => {
+        app.listen(process.env.EXPRESS_PORT, () => {
+            logger.info(`Server is running on port: ${process.env.EXPRESS_PORT}`);
+        });
     });

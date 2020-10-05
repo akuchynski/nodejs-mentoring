@@ -1,57 +1,57 @@
-import GroupModel from '../db/models/group.model';
-import UserModel from '../db/models/user.model';
+import { User, Group } from '../db/models';
+import { logged } from '../utils/decorators/logged';
 
 class UserService {
+    @logged
     async createUser(requestBody) {
-        return UserModel.create(requestBody);
+        return User.create(requestBody);
     }
 
+    @logged
     async getUserById(id) {
-        return UserModel.findOne({
+        return User.findOne({
             where: {
                 id
             },
-            include: [
-                {
-                    model: GroupModel
-                }
-            ]
+            include: {
+                model: Group
+            }
         });
     }
 
+    @logged
     async getUserByLogin(login) {
-        return UserModel.findOne({
+        return User.findOne({
             where: {
                 login
             },
-            include: [
-                {
-                    model: GroupModel
-                }
-            ]
+            include: {
+                model: Group
+            }
         });
     }
 
+    @logged
     async getAllUsers() {
-        return UserModel.findAll({
-            include: [
-                {
-                    model: GroupModel
-                }
-            ]
+        return User.findAll({
+            include: {
+                model: Group
+            }
         });
     }
 
+    @logged
     async updateUser(id, requestBody) {
-        return UserModel.update(requestBody, {
+        return User.update(requestBody, {
             where: {
                 id
             }
         });
     }
 
+    @logged
     async deleteUserById(id) {
-        return UserModel.destroy({
+        return User.destroy({
             where: {
                 id
             }

@@ -1,88 +1,91 @@
-import { Sequelize } from 'sequelize';
-import GroupModel from '../db/models/group.model';
-import UserModel from '../db/models/user.model';
+import { Op } from 'sequelize';
 import { sequelize } from '../db/index';
+import { Group, User } from '../db/models';
+import { logged } from '../utils/decorators/logged';
 
 class GroupService {
+    @logged
     async createGroup(requestBody) {
-        return GroupModel.create(requestBody);
+        return Group.create(requestBody);
     }
 
+    @logged
     async getGroupById(id) {
-        return GroupModel.findOne({
+        return Group.findOne({
             where: {
                 id
             },
-            include: [
-                {
-                    model: UserModel
-                }
-            ]
+            include: {
+                model: User
+            }
         });
     }
 
+    @logged
     async getGroupByName(name) {
-        return GroupModel.findOne({
+        return Group.findOne({
             where: {
                 name
             },
-            include: [
-                {
-                    model: UserModel
-                }
-            ]
+            include: {
+                model: User
+            }
         });
     }
 
+    @logged
     async getAllGroups() {
-        return GroupModel.findAll({
-            include: [
-                {
-                    model: UserModel
-                }
-            ]
+        return Group.findAll({
+            include: {
+                model: User
+            }
         });
     }
 
+    @logged
     async updateGroup(id, requestBody) {
-        return GroupModel.update(requestBody, {
+        return Group.update(requestBody, {
             where: {
                 id
             }
         });
     }
 
+    @logged
     async deleteGroupById(id) {
-        return GroupModel.destroy({
+        return Group.destroy({
             where: {
                 id
             }
         });
     }
 
+    @logged
     async addUsersToGroup(id, userIds) {
-        const group = await GroupModel.findOne({
+        const group = await Group.findOne({
             where: {
                 id
             },
-            include: [
-                {
-                    model: UserModel
-                }
-            ]
-        });
-
-        const usersList = await UserModel.findAll({
-            where: {
-                id: { [Sequelize.Op.in]: userIds }
+            include: {
+                model: User
             }
         });
 
-        const transaction = await sequelize.transaction({ autocommit:false });
+        const usersList = await User.findAll({
+            where: {
+                id: { [Op.in]: userIds }
+            }
+        });
+
+        if (usersList.length === 0) {
+            throw ({ status: 404, code: 'USER_NOT_EXISTS', message: `Users dont exist. Check input data. userIds: ${userIds}` });
+        }
+
+        const transaction = await sequelize.transaction({ autocommit: false });
         try {
             await group.addUsers(usersList, { transaction });
-            await group.save({ transaction });
             await transaction.commit();
+            return await group.reload();
         } catch (err) {
             await transaction.rollback();
         }
