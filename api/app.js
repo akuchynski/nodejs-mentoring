@@ -4,8 +4,12 @@ import groupRouter from './routes/groupRouter';
 import { sequelize } from './db';
 import logger from './utils/loggers/logger';
 import globalErrorHandler from './middlewares/globalErrorHandler';
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors());
+app.options('*', cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
