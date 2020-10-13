@@ -1,15 +1,9 @@
 import express from 'express';
-import { login, create, getAll, getById, update, remove } from '../controllers/userController';
-import { userSchema, userAuthSchema } from '../schemas/userSchema';
-import { authenticateToken } from '../middlewares/accessTokenHandler';
+import { create, getAll, getById, update, remove } from '../controllers/userController';
+import { userSchema } from '../schemas/userSchema';
 
 const router = express.Router();
 const validator = require('express-joi-validation').createValidator({});
-
-router.route('/login')
-    .post(validator.body(userAuthSchema), login);
-
-router.use(authenticateToken);
 
 router.route('/')
     .post(validator.body(userSchema), create)

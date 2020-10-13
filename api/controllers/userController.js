@@ -1,14 +1,5 @@
 import { userService } from '../services/userService';
 
-const login = async (req, res, next) => {
-    try {
-        const token = await userService.authenticateUser(req.body.login, req.body.password);
-        res.send(token);
-    } catch (error) {
-        return next(error);
-    }
-};
-
 const create = async (req, res, next) => {
     try {
         const user = await userService.getUserByLogin(req.body.login);
@@ -70,7 +61,6 @@ const remove = async (req, res, next) => {
 };
 
 export {
-    login,
     create,
     getAll,
     getById,

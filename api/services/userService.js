@@ -1,25 +1,7 @@
 import { User, Group } from '../db/models';
 import { logged } from '../utils/decorators/logged';
-const jwt = require('jsonwebtoken');
 
 class UserService {
-    @logged
-    async authenticateUser(login, password) {
-        const user = await User.findOne({
-            where: {
-                login,
-                password
-            }
-        });
-
-        if (!user) {
-            throw ({ status: 403, code: 'USER_NOT_AUTHENTICATED', message: 'Username or password is incorrect' });
-        }
-        const payload = { 'sub': user.id, 'isDeleted': user.isDeleted };
-        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: parseInt(process.env.TOKEN_EXPIRE_TIME, 10) });
-        return token;
-    }
-
     @logged
     async createUser(requestBody) {
         return User.create(requestBody);
@@ -42,6 +24,19 @@ class UserService {
         return User.findOne({
             where: {
                 login
+            },
+            include: {
+                model: Group
+            }
+        });
+    }
+
+    @logged
+    async getUserByLoginPassword(login, password) {
+        return User.findOne({
+            where: {
+                login,
+                password
             },
             include: {
                 model: Group

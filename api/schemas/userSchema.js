@@ -7,9 +7,4 @@ const userSchema = Joi.object().keys({
     isDeleted: Joi.boolean()
 });
 
-const userAuthSchema = Joi.object().keys({
-    login: Joi.string().alphanum().min(4).required(),
-    password: Joi.string().regex(/^(?=.*[a-zA-Z])(?=.*[0-9])/).alphanum().min(4).required()
-});
-
-export { userSchema, userAuthSchema };
+export { userSchema };
