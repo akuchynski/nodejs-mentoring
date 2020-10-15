@@ -1,5 +1,6 @@
 import { userService } from '../services/userService';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../middlewares/accessTokenHandler';
+const createError = require('http-errors');
 
 const login = async (req, res, next) => {
     try {
@@ -9,7 +10,7 @@ const login = async (req, res, next) => {
             const refreshToken = signRefreshToken(user.id);
             res.send({ accessToken, refreshToken });
         } else {
-            throw ({ status: 403, code: 'USER_NOT_AUTHENTICATED', message: 'Username or password is incorrect' });
+            throw createError.Forbidden('Username or password is incorrect!');
         }
     } catch (error) {
         return next(error);

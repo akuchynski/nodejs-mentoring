@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const createError = require('http-errors');
 
 const signAccessToken = (userId) => {
     const payload = { 'sub': userId };
@@ -11,13 +12,13 @@ const verifyAccessToken = (req, res, next) => {
         const token = authHeader.split(' ')[1];
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(403).send({ success: false, message: 'Failed to authenticate token!' });
+                throw createError.Forbidden('Failed to authenticate access token!');
             }
             req.decoded = decoded;
             next();
         });
     } else {
-        res.status(401).send({ success: false, message: 'Access token is absent!' });
+        throw createError.Unauthorized('Access token is absent!');
     }
 };
 
@@ -29,7 +30,7 @@ const signRefreshToken = (userId) => {
 const verifyRefreshToken = (refreshToken) => {
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
         if (err) {
-            console.log(err);
+            throw createError.Forbidden('Failed to authenticate refresh token!');
         }
         return decoded.sub;
     });

@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import { sequelize } from '../db/index';
 import { Group, User } from '../db/models';
 import { logged } from '../utils/decorators/logged';
+const createError = require('http-errors');
 
 class GroupService {
     @logged
@@ -77,8 +78,8 @@ class GroupService {
             }
         });
 
-        if (usersList.length === 0) {
-            throw ({ status: 404, code: 'USER_NOT_EXISTS', message: `Users dont exist. Check input data. userIds: ${userIds}` });
+        if (usersList.length === 0 || usersList.length !== userIds.length) {
+            throw createError.BadRequest(`Incorrect users data. Check userIds: ${userIds}`);
         }
 
         const transaction = await sequelize.transaction({ autocommit: false });
