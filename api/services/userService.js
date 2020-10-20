@@ -32,6 +32,19 @@ class UserService {
     }
 
     @logged
+    async getUserByLoginPassword(login, password) {
+        return User.findOne({
+            where: {
+                login,
+                password
+            },
+            include: {
+                model: Group
+            }
+        });
+    }
+
+    @logged
     async getAllUsers() {
         return User.findAll({
             include: {
