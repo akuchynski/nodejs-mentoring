@@ -2,12 +2,22 @@ import { Op } from 'sequelize';
 import { sequelize } from '../db/index';
 import { Group, User } from '../db/models';
 import { logged } from '../utils/decorators/logged';
-const createError = require('http-errors');
+import createError from 'http-errors';
 
 class GroupService {
     @logged
     async createGroup(requestBody) {
-        return Group.create(requestBody);
+        const name = requestBody.name;
+        const group = await Group.findOne({
+            where: {
+                name
+            }
+        });
+        if (group) {
+            throw createError.Conflict(`Group name ${name} already exists!`);
+        } else {
+            return Group.create(requestBody);
+        }
     }
 
     @logged
@@ -71,6 +81,10 @@ class GroupService {
                 model: User
             }
         });
+
+        if (!group) {
+            throw createError.NotFound(`Group id: ${id} not found!`);
+        }
 
         const usersList = await User.findAll({
             where: {
