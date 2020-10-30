@@ -6,6 +6,7 @@
   "scripts": {
     "app:start": "nodemon --exec babel-node -r ./node_modules/dotenv/config ./app.js",
     "app:test": "jest",
+    "app:coverage": "jest --coverage",
     "app:debug": "@powershell $env:DEBUG='express:*'; nodemon --exec babel-node -r ./node_modules/dotenv/config ./app.js",
     "tables:create": "npx sequelize-cli db:migrate --env development",
     "tables:delete": "npx sequelize-cli db:migrate:undo:all --env development",
