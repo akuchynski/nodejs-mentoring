@@ -1,15 +1,9 @@
 import { userService } from '../services/userService';
-const createError = require('http-errors');
 
 const create = async (req, res, next) => {
     try {
-        const user = await userService.getUserByLogin(req.body.login);
-        if (user) {
-            throw createError.Conflict(`User login ${req.body.login} already exists!`);
-        } else {
-            const userData = await userService.createUser(req.body);
-            res.status(201).json(userData.id);
-        }
+        const user = await userService.createUser(req.body);
+        res.status(201).json(user.id);
     } catch (error) {
         return next(error);
     }
@@ -18,7 +12,7 @@ const create = async (req, res, next) => {
 const getAll = async (req, res, next) => {
     try {
         const users = await userService.getAllUsers();
-        res.json(users);
+        res.status(200).json(users);
     } catch (error) {
         return next(error);
     }
@@ -28,9 +22,9 @@ const getById = async (req, res, next) => {
     try {
         const user = await userService.getUserById(req.params.id);
         if (user) {
-            res.json(user);
+            res.status(200).json(user);
         } else {
-            throw createError.NotFound(`User id ${req.params.id} not found!`);
+            res.status(404).end();
         }
     } catch (error) {
         return next(error);
@@ -39,13 +33,11 @@ const getById = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const user = await userService.getUserById(req.params.id);
-        if (user) {
-            await userService.updateUser(req.params.id, req.body);
-            await user.reload();
-            res.json(user);
-        } else {
-            throw createError.NotFound(`User id ${req.params.id} not found!`);
+        const updatedRows = await userService.updateUser(req.params.id, req.body);
+        if (updatedRows[0] === 1) {
+            res.status(200).end();
+        } else if (updatedRows[0] === 0) {
+            res.status(204).end();
         }
     } catch (error) {
         return next(error);
@@ -54,12 +46,11 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
     try {
-        const user = await userService.getUserById(req.params.id);
-        if (user) {
-            await userService.deleteUserById(req.params.id);
+        const deletedRowsCount = await userService.deleteUserById(req.params.id);
+        if (deletedRowsCount === 1) {
             res.status(200).end();
-        } else {
-            throw createError.NotFound(`User id ${req.params.id} not found!`);
+        } else if (deletedRowsCount === 0) {
+            res.status(204).end();
         }
     } catch (error) {
         return next(error);

@@ -1,10 +1,21 @@
 import { User, Group } from '../db/models';
 import { logged } from '../utils/decorators/logged';
+import createError from 'http-errors';
 
 class UserService {
     @logged
     async createUser(requestBody) {
-        return User.create(requestBody);
+        const login = requestBody.login;
+        const user = await User.findOne({
+            where: {
+                login
+            }
+        });
+        if (user) {
+            throw createError.Conflict(`User login ${login} already exists!`);
+        } else {
+            return User.create(requestBody);
+        }
     }
 
     @logged

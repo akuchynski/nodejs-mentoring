@@ -5,6 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "app:start": "nodemon --exec babel-node -r ./node_modules/dotenv/config ./app.js",
+    "app:test": "jest",
+    "app:coverage": "jest --coverage",
     "app:debug": "@powershell $env:DEBUG='express:*'; nodemon --exec babel-node -r ./node_modules/dotenv/config ./app.js",
     "tables:create": "npx sequelize-cli db:migrate --env development",
     "tables:delete": "npx sequelize-cli db:migrate:undo:all --env development",
@@ -43,6 +45,8 @@
     "@types/validator": "^13.1.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.7.0",
+    "jest": "^26.6.1",
+    "nock": "^13.0.4",
     "nodemon": "^2.0.4",
     "sequelize-cli": "^6.2.0"
   },
